@@ -4,47 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ivan K - Personal Page</title>
+    <title>Ivan K - DevOps Engineer</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <header>
-        <h1>Ivan K</h1>
-        <p>DevOps engineer</p>
+        <div class="container">
+            <h1>Ivan K</h1>
+            <p class="subtitle">DevOps Engineer</p>
+        </div>
     </header>
-    <main>
+    <main class="container">
         <section id="about">
-            <h2>About Me</h2>
-            <p>Hello! I'm a passionate devops engineer with a love for creating intuitive and efficient automations.
-                I specialize in k8s, terraform, ansible, python, bash and other, and I'm always eager to learn new
-                technologies.</p>
+            <h2><i class="fas fa-user"></i> About Me</h2>
+            <p>Hello! I'm a passionate DevOps engineer with a love for creating intuitive and efficient automations. I
+                specialize in k8s, terraform, ansible, python, bash and other technologies. I'm always eager to learn
+                and apply new skills to solve complex problems.</p>
         </section>
         <section id="projects">
-            <h2>My Projects</h2>
-            <ul>
-                <li><a href="#" onclick="openPopup('https://vizzletf.github.io/GeminiCommit/'); return false;">
-                        GeminiCommit</a> - VS Code extension. Uses Google's Gemini AI to auto-generate commit
-                    messages. Saves time, improves version control.</li>
-                <li><a href="#" onclick="openPopup('https://vizzletf.github.io/home_proxmox/'); return false;">Home
-                        lab</a> - Custom configs and scripts for home lab. Manages VMs (terraform + ansible), K8s
-                    cluster (kubespray), helms (helmfile) and deployments (kubectl).</li>
-                <li><a href="#" onclick="openPopup('https://vizzletf.github.io/home_lab/'); return false;">Web App for
-                        Homelab</a> - Small-scale Python/Flask web app for home lab. Dynamic interface with HTML/CSS.
-                    Demonstrates custom website building.</li>
-                <li><a href="#" onclick="openPopup('https://vizzletf.github.io/StrongSwan_VPN/'); return false;"> VPN
-                        Installation Script</a> - Automates secure StrongSwan VPN server setup with IKEv2. Quick,
-                    seamless installation and configuration.</li>
-            </ul>
+            <h2><i class="fas fa-project-diagram"></i> My Projects</h2>
+            <div class="project-grid">
+                <div class="project-card" onclick="openPopup('https://vizzletf.github.io/GeminiCommit/')">
+                    <h3>GeminiCommit</h3>
+                    <p>VS Code extension. Uses Google's Gemini AI to auto-generate commit messages. Saves time, improves
+                        version control.</p>
+                </div>
+                <div class="project-card" onclick="openPopup('https://vizzletf.github.io/home_proxmox/')">
+                    <h3>Home Lab</h3>
+                    <p>Custom configs and scripts for home lab. Manages VMs (terraform + ansible), K8s cluster
+                        (kubespray), helms (helmfile) and deployments (kubectl).</p>
+                </div>
+                <div class="project-card" onclick="openPopup('https://vizzletf.github.io/home_lab/')">
+                    <h3>Web App for Homelab</h3>
+                    <p>Small-scale Python/Flask web app for home lab. Dynamic interface with HTML/CSS. Demonstrates
+                        custom website building.</p>
+                </div>
+                <div class="project-card" onclick="openPopup('https://vizzletf.github.io/StrongSwan_VPN/')">
+                    <h3>VPN Installation Script</h3>
+                    <p>Automates secure StrongSwan VPN server setup with IKEv2. Quick, seamless installation and
+                        configuration.</p>
+                </div>
+            </div>
         </section>
         <section id="contact">
-            <h2>Contact Me</h2>
-            <p>Email: vizzlef@gmail.com</p>
-            <p>GitHub: <a href="https://github.com/vizzletf">vizzletf</a></p>
+            <h2><i class="fas fa-envelope"></i> Contact Me</h2>
+            <p><i class="fas fa-envelope"></i> Email: <a href="mailto:vizzlef@gmail.com">vizzlef@gmail.com</a></p>
+            <p><i class="fab fa-github"></i> GitHub: <a href="https://github.com/vizzletf" target="_blank">vizzletf</a>
+            </p>
         </section>
     </main>
     <footer>
-        <p>&copy; 2024 Ivan K. All rights reserved.</p>
+        <div class="container">
+            <p>&copy; 2024 Ivan K. All rights reserved.</p>
+        </div>
     </footer>
 
     <div class="overlay" id="overlay"></div>
