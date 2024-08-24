@@ -4,16 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Personal Page</title>
+    <title>Ivan K - Personal Page</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <header>
-        <h1>Your Name</h1>
-        <p>Web Developer | Open Source Enthusiast</p>
+        <h1>Ivan K</h1>
+        <p>DevOps engineer</p>
     </header>
-
     <nav>
         <ul>
             <li><a href="#about">About</a></li>
@@ -21,34 +20,59 @@
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
-
     <main>
         <section id="about">
             <h2>About Me</h2>
-            <p>Hello! I'm a passionate web developer with a love for creating intuitive and efficient web applications.
-                I specialize in JavaScript and Python, and I'm always eager to learn new technologies.</p>
+            <p>Hello! I'm a passionate devops engineer with a love for creating intuitive and efficient automations.
+                I specialize in k8s, terraform, ansible, python and bash, and I'm always eager to learn new
+                technologies.</p>
         </section>
-
         <section id="projects">
             <h2>My Projects</h2>
             <ul>
-                <li><a href="#">Project 1</a> - Brief description</li>
-                <li><a href="#">Project 2</a> - Brief description</li>
-                <li><a href="#">Project 3</a> - Brief description</li>
+                <li><a href="https://github.com/VizzleTF/StrongSwan_VPN">Automated StrongSwan VPN Installation
+                        Script</a> - This project simplifies the setup process of a secure StrongSwan VPN server with
+                    IKEv2. It automates the deployment steps, allowing for quick and seamless VPN installation and
+                    configuration, ensuring strong security and encryption.</li>
+                <li><a href="https://github.com/VizzleTF/home_lab">Flask Web Application for Personal Use</a> - A
+                    personal project that demonstrates a small-scale web application developed using Python and Flask.
+                    It features a dynamic interface with HTML and CSS integration, showcasing the ability to build a
+                    custom, functional website.</li>
+                <li><a href="#" onclick="openPopup('https://vizzletf.github.io/home_proxmox/'); return false;">Proxmox
+                        Virtualization Management</a> - This project contains custom configurations and automation
+                    scripts designed for managing a personal Proxmox home lab. It's ideal for managing virtual machines
+                    efficiently, enhancing productivity, and streamlining server operations.</li>
             </ul>
         </section>
-
         <section id="contact">
             <h2>Contact Me</h2>
-            <p>Email: your.email@example.com</p>
-            <p>GitHub: <a href="https://github.com/yourusername">yourusername</a></p>
-            <p>LinkedIn: <a href="https://www.linkedin.com/in/yourprofile">Your Name</a></p>
+            <p>Email: vizzlef@gmail.com</p>
+            <p>GitHub: <a href="https://github.com/vizzletf">vizzletf</a></p>
         </section>
     </main>
-
     <footer>
-        <p>&copy; 2024 Your Name. All rights reserved.</p>
+        <p>&copy; 2024 Ivan K. All rights reserved.</p>
     </footer>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <button class="close-btn" onclick="closePopup()">&times;</button>
+        <iframe class="popup-content" id="popup-content"></iframe>
+    </div>
+
+    <script>
+        function openPopup(url) {
+            document.getElementById('popup-content').src = url;
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup-content').src = '';
+        }
+    </script>
 </body>
 
 </html>
