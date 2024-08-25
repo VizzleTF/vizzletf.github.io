@@ -41,17 +41,20 @@ function Projects({ openPopup }) {
 
     return (
         <section className="projects">
-            <h3>Pinned</h3>
+            <h2>Projects</h2>
             <div className="project-grid">
                 {projects.map((project, index) => (
                     <div key={index} className="project-card" onClick={() => openPopup(project.url)}>
-                        <h3>{project.title}</h3>
+                        <div className="project-header">
+                            <h3 className="project-title">{project.title}</h3>
+                            <span className="public-label">Public</span>
+                        </div>
                         <p>{project.description}</p>
                         <div className="project-footer">
                             <div className="tool-list">
                                 {project.tools.map((tool, toolIndex) => (
                                     <span key={toolIndex} className="tool">
-                                        <span className={`tool-color ${tool.toLowerCase().replace(/\s+/g, '-')}`}></span>
+                                        <span className={`tool-color ${tool.toLowerCase().replace(/\s+/g, '-').replace('.', '')}`}></span>
                                         {tool}
                                     </span>
                                 ))}
