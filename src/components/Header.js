@@ -5,7 +5,7 @@ function Header() {
         <header>
             <div className="container header-content">
                 <div className="logo">
-                    <h1>VizzleTF</h1>
+                    <i className="fab fa-github"></i> VizzleTF
                 </div>
             </div>
         </header>
