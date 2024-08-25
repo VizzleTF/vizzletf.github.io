@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 function Projects({ openPopup }) {
     const [visibleProjects, setVisibleProjects] = useState([]);
     const [visiblePublicLabels, setVisiblePublicLabels] = useState([]);
-    const projects = [
+
+    const projects = useMemo(() => [
         {
             title: "GeminiCommit",
             description: "VS Code extension. Uses Google's Gemini AI to auto-generate commit messages.",
@@ -30,7 +31,7 @@ function Projects({ openPopup }) {
         },
         {
             title: "VPN Installation Script",
-            description: "Automates secure StrongSwan VPN server setup with IKEv2.",
+            description: "Automates VPN server setup with IKEv2.",
             url: "https://vizzletf.github.io/StrongSwan_VPN/",
             repo_url: "https://github.com/VizzleTF/StrongSwan_VPN",
             tools: ["Shell", "StrongSwan", "IKEv2"],
@@ -44,7 +45,7 @@ function Projects({ openPopup }) {
             tools: ["React", "CSS", "GitHub Pages", "GitHub Actions"],
             icon: "fa-user-circle"
         }
-    ];
+    ], []); // Пустой массив зависимостей, так как проекты не меняются
 
     useEffect(() => {
         projects.forEach((_, index) => {
@@ -56,7 +57,7 @@ function Projects({ openPopup }) {
                 setVisiblePublicLabels(prev => [...prev, index]);
             }, index * 200 + 1000);
         });
-    }, []);
+    }, [projects]);
 
     return (
         <section className="projects">
