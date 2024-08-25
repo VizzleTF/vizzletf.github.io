@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
-import About from './components/About';
+import Sidebar from './components/Sidebar';
 import Projects from './components/Projects';
 import Footer from './components/Footer';
 import Popup from './components/Popup';
 import './App.css';
 
 function App() {
-    const [popupUrl, setPopupUrl] = React.useState(null);
+    const [popupUrl, setPopupUrl] = useState(null);
 
     const openPopup = (url) => {
         setPopupUrl(url);
@@ -20,10 +20,12 @@ function App() {
     return (
         <div className="App">
             <Header />
-            <main className="container">
-                <About />
-                <Projects openPopup={openPopup} />
-            </main>
+            <div className="main-content container">
+                <Sidebar />
+                <main>
+                    <Projects openPopup={openPopup} />
+                </main>
+            </div>
             <Footer />
             {popupUrl && <Popup url={popupUrl} onClose={closePopup} />}
         </div>

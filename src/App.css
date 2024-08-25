@@ -37,22 +37,56 @@ header {
     border-bottom: 1px solid var(--border-color);
 }
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 header h1 {
     margin: 0;
-    font-size: 26px;
+    font-size: 18px;
     font-weight: 600;
     color: var(--text-primary);
 }
 
-.subtitle {
-    font-size: 14px;
-    margin-top: 4px;
+.main-content {
+    display: flex;
+    padding-top: 32px;
+}
+
+.sidebar {
+    width: 250px;
+    margin-right: 32px;
+}
+
+.profile-image {
+    width: 100%;
+    border-radius: 50%;
+    margin-bottom: 16px;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    border-bottom: none;
+}
+
+.sidebar .username {
+    color: var(--text-secondary);
+    margin-top: -10px;
+}
+
+.sidebar p {
+    margin: 8px 0;
+}
+
+.sidebar i {
+    margin-right: 8px;
     color: var(--text-secondary);
 }
 
 main {
     flex: 1;
-    padding: 32px 0;
 }
 
 h2 {
@@ -79,6 +113,8 @@ h2 {
     padding: 16px;
     transition: background-color 0.2s ease;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
 }
 
 .project-card:hover {
@@ -93,33 +129,122 @@ h2 {
     font-weight: 600;
 }
 
-a {
+.project-footer {
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+.tool-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.tool {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+    background-color: var(--secondary-bg);
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.tool-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.tool-color.typescript {
+    background-color: #2b7489;
+}
+
+.tool-color.vs-code-api {
+    background-color: #0078D7;
+}
+
+.tool-color.terraform {
+    background-color: #7B42BC;
+}
+
+.tool-color.ansible {
+    background-color: #EE0000;
+}
+
+.tool-color.kubernetes {
+    background-color: #326CE5;
+}
+
+.tool-color.helm {
+    background-color: #277A9F;
+}
+
+.tool-color.kubectl {
+    background-color: #326CE5;
+}
+
+.tool-color.python {
+    background-color: #3572A5;
+}
+
+.tool-color.flask {
+    background-color: #000000;
+}
+
+.tool-color.html {
+    background-color: #e34c26;
+}
+
+.tool-color.css {
+    background-color: #563d7c;
+}
+
+.tool-color.shell {
+    background-color: #89e051;
+}
+
+.tool-color.strongswan {
+    background-color: #4A154B;
+}
+
+.tool-color.ikev2 {
+    background-color: #FFA500;
+}
+
+.tool-color.react {
+    background-color: #61DAFB;
+}
+
+.tool-color.github-pages {
+    background-color: #222222;
+}
+
+.repo-link {
+    display: inline-block;
     color: var(--accent-primary);
     text-decoration: none;
-    transition: color 0.2s ease;
+    padding: 6px 12px;
+    border: 1px solid var(--accent-primary);
+    border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
-a:hover {
-    color: var(--accent-secondary);
-    text-decoration: underline;
+.repo-link:hover {
+    color: var(--primary-bg);
+    background-color: var(--accent-primary);
+    text-decoration: none;
 }
 
-.footer-container {
+footer {
     background-color: var(--secondary-bg);
     color: var(--text-secondary);
-    padding: 8px 0;
+    padding: 16px 0;
+    margin-top: auto;
     font-size: 12px;
     border-top: 1px solid var(--border-color);
-}
-
-#contact {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#contact p {
-    margin: 0;
 }
 
 .popup {
@@ -177,16 +302,17 @@ a:hover {
 }
 
 @media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 32px;
+    }
+
     .project-grid {
         grid-template-columns: 1fr;
-    }
-
-    #contact {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    #contact p {
-        margin: 4px 0;
     }
 }
