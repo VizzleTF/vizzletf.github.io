@@ -1,20 +1,35 @@
 # Ivan K's Personal Website
 
-This repository contains the source code for Ivan K's personal website, showcasing his skills as a DevOps engineer and highlighting his projects.
+This repository contains the source code for web site with mine projects.
 
 ## Project Structure
 
-The project consists of the following main files:
+The project is a React application with the following main components:
 
-- `index.html`: The main HTML file that structures the content of the website.
-- `styles.css`: The CSS file that styles the website and the popup functionality.
-- `README.md`: This file, providing information about the project.
+- `src/App.js`: The main React component that structures the application.
+- `src/App.css`: The main CSS file for styling the application.
+- `src/components/`: Directory containing React components for different parts of the website.
+- `public/index.html`: The HTML template for the React application.
 
 ## Technologies Used
 
-- HTML5
+- React.js
 - CSS3
-- Vanilla JavaScript (for popup functionality)
+- JavaScript
+- GitHub Actions (for automated deployment)
+- GitHub Pages (for hosting)
+
+## Local Development
+
+To run this project locally:
+
+1. Clone the repository
+2. Install dependencies with `npm install`
+3. Start the development server with `npm start`
+
+## Deployment
+
+This project is automatically deployed to GitHub Pages using GitHub Actions. Any push to the `main` branch will trigger a new build and deployment.
 
 ## Contributing
 
@@ -22,7 +37,7 @@ This is a personal website, but if you notice any bugs or have suggestions for i
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source and available under the MIT License.
 
 ## Contact
 
