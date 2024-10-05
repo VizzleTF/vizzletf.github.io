@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Projects from './components/Projects';
+import HomeLabStatus from './components/HomeLabStatus';
 import Footer from './components/Footer';
 import Popup from './components/Popup';
 import './App.css';
@@ -24,6 +25,7 @@ function App() {
                 <Sidebar />
                 <main>
                     <Projects openPopup={openPopup} />
+                    <HomeLabStatus />
                 </main>
             </div>
             <Footer />
