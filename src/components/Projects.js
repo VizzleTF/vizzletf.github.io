@@ -44,6 +44,14 @@ function Projects({ openPopup }) {
             repo_url: "https://github.com/VizzleTF/vizzletf.github.io",
             tools: ["React", "CSS", "GitHub Pages", "GitHub Actions"],
             icon: "fa-user-circle"
+        },
+        {
+            "title": "Cluster Status App",
+            "description": "A Kubernetes and Proxmox cluster monitoring application that provides real-time status updates via a RESTful API.",
+            "url": "https://status.vakaf.space",
+            "repo_url": "https://github.com/VizzleTF/cluster-status-app",
+            "tools": ["Go", "Helm", "GitHub Actions", "Proxmox API", "REST API"],
+            "icon": "fa-brands fa-golang"
         }
     ], []); // Пустой массив зависимостей, так как проекты не меняются
 

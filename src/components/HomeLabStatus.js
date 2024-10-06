@@ -64,7 +64,7 @@ const HomeLabStatus = () => {
                     <div className="status-grid">
                         {statusData.nodeStatuses.map((node, index) => (
                             <div key={index} className="status-item">
-                                <span className="status-label">{node.roles[0]}</span>
+                                <span className={`status-label ${node.status}`}>{node.status}</span>
                                 <span className="item-name">{node.name}</span>
                                 <span className="item-version">{node.version}</span>
                                 <span className="uptime">Uptime: {node.uptime}</span>
@@ -100,7 +100,8 @@ const HomeLabStatus = () => {
                     </div>
                     <div className="pod-status-grid">
                         {Object.entries(statusData.podStatuses).map(([status, count]) => (
-                            <div key={status} className="pod-status-item" title={`${status}: ${count}`}>
+                            <div key={status} className="pod-status-item">
+                                <span className="pod-status">{status}</span>
                                 <span className="pod-count">{count}</span>
                             </div>
                         ))}
