@@ -1,28 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const HomeLabStatus = () => {
     const [statusData, setStatusData] = useState(null);
     const [error, setError] = useState(null);
+    const [lastUpdated, setLastUpdated] = useState(null);
+    const [liveUpdates, setLiveUpdates] = useState(false);
+
+    const fetchData = useCallback(async () => {
+        try {
+            const response = await fetch('https://status.vakaf.space/status');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setStatusData(data);
+            setLastUpdated(new Date());
+            setError(null);
+        } catch (e) {
+            console.error("Could not fetch status data:", e);
+            setError("Failed to load status data. Please try again later.");
+        }
+    }, []);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('https://status.vakaf.space/status');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setStatusData(data);
-            } catch (e) {
-                console.error("Could not fetch status data:", e);
-                setError("Failed to load status data. Please try again later.");
-            }
-        };
-
         fetchData();
-        const intervalId = setInterval(fetchData, 300000);
+        let intervalId;
+        if (liveUpdates) {
+            intervalId = setInterval(fetchData, 5000);
+        }
         return () => clearInterval(intervalId);
-    }, []);
+    }, [fetchData, liveUpdates]);
+
+    const toggleLiveUpdates = () => {
+        setLiveUpdates(!liveUpdates);
+    };
 
     if (error) {
         return <div className="error project-card">{error}</div>;
@@ -34,7 +45,25 @@ const HomeLabStatus = () => {
 
     return (
         <section className="homelab-status">
-            <h2>Home Lab Status</h2>
+            <div className="homelab-status-header">
+                <h2>Home Lab Status</h2>
+                <div className="status-controls">
+                    {liveUpdates && lastUpdated && (
+                        <span className="last-updated">
+                            Last updated: {lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                        </span>
+                    )}
+                    <label className="live-updates-toggle">
+                        <input
+                            type="checkbox"
+                            checked={liveUpdates}
+                            onChange={toggleLiveUpdates}
+                        />
+                        <span className="slider round"></span>
+                    </label>
+                    <span className="live-updates-label">Live Updates</span>
+                </div>
+            </div>
             <div className="project-grid">
                 <div className="project-card">
                     <div className="project-header">
