@@ -26,7 +26,7 @@ const HomeLabStatus = () => {
         fetchData();
         let intervalId;
         if (liveUpdates) {
-            intervalId = setInterval(fetchData, 5000);
+            intervalId = setInterval(fetchData, 1000);
         }
         return () => clearInterval(intervalId);
     }, [fetchData, liveUpdates]);
@@ -53,15 +53,17 @@ const HomeLabStatus = () => {
                             Last updated: {lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                         </span>
                     )}
-                    <label className="live-updates-toggle">
-                        <input
-                            type="checkbox"
-                            checked={liveUpdates}
-                            onChange={toggleLiveUpdates}
-                        />
-                        <span className="slider round"></span>
-                    </label>
-                    <span className="live-updates-label">Live Updates</span>
+                    <div className="live-updates-container">
+                        <label className="live-updates-toggle">
+                            <input
+                                type="checkbox"
+                                checked={liveUpdates}
+                                onChange={toggleLiveUpdates}
+                            />
+                            <span className="slider round"></span>
+                        </label>
+                        <span className="live-updates-label">Live Updates</span>
+                    </div>
                 </div>
             </div>
             <div className="project-grid">
@@ -73,7 +75,7 @@ const HomeLabStatus = () => {
                         </h3>
                     </div>
                     <div className="status-grid helm-grid">
-                        {statusData.helmReleases.map((release, index) => (
+                        {statusData.helm_releases.map((release, index) => (
                             <div key={index} className="status-item">
                                 <span className={`status-label ${release.status}`}>{release.status}</span>
                                 <span className="item-name">{release.name}</span>
@@ -91,7 +93,7 @@ const HomeLabStatus = () => {
                         </h3>
                     </div>
                     <div className="status-grid">
-                        {statusData.nodeStatuses.map((node, index) => (
+                        {statusData.node_statuses.map((node, index) => (
                             <div key={index} className="status-item">
                                 <span className={`status-label ${node.status}`}>{node.status}</span>
                                 <span className="item-name">{node.name}</span>
@@ -110,7 +112,7 @@ const HomeLabStatus = () => {
                         </h3>
                     </div>
                     <div className="status-grid">
-                        {statusData.proxmoxNodes.map((node, index) => (
+                        {statusData.proxmox_nodes.map((node, index) => (
                             <div key={index} className="status-item">
                                 <span className={`status-label ${node.status}`}>{node.status}</span>
                                 <span className="item-name">{node.name}</span>
@@ -128,7 +130,7 @@ const HomeLabStatus = () => {
                         </h3>
                     </div>
                     <div className="pod-status-grid">
-                        {Object.entries(statusData.podStatuses).map(([status, count]) => (
+                        {Object.entries(statusData.pod_statuses).map(([status, count]) => (
                             <div key={status} className="pod-status-item">
                                 <span className="pod-status">{status}</span>
                                 <span className="pod-count">{count}</span>
