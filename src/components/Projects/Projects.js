@@ -116,6 +116,35 @@ const ToolColor = styled.span`
     background-color: ${props => props.color};
 `;
 
+const getToolColor = (tool) => {
+    const colors = {
+        TypeScript: '#2b7489',
+        'VS Code API': '#0078D7',
+        Terraform: '#7B42BC',
+        Ansible: '#EE0000',
+        Kubernetes: '#326CE5',
+        Helm: '#277A9F',
+        Kubectl: '#326CE5',
+        Python: '#3572A5',
+        Flask: '#000000',
+        HTML: '#e34c26',
+        CSS: '#563d7c',
+        Shell: '#89e051',
+        StrongSwan: '#4A154B',
+        IKEv2: '#FFA500',
+        React: '#61DAFB',
+        'GitHub Pages': '#222222',
+        'GitHub Actions': '#2088FF',
+        'Gemini AI': '#663333',
+        Git: '#F05032',
+        Go: '#00ADD8',
+        'Proxmox API': '#E57000',
+        'REST API': '#0096D6',
+        Redis: '#E5197E',
+    };
+    return colors[tool] || '#000000';
+};
+
 const RepoLink = styled.a`
     display: inline-block;
     color: ${props => props.theme.colors.accentPrimary};
@@ -173,8 +202,8 @@ function Projects({ openPopup }) {
             icon: "fa-shield-alt"
         },
         {
-            title: "This page",
-            description: "Github hosted page.",
+            title: "React Web Page",
+            description: "React application hosted on GitHub Pages.",
             url: "https://vizzletf.github.io",
             repo_url: "https://github.com/VizzleTF/vizzletf.github.io",
             tools: ["React", "CSS", "GitHub Pages", "GitHub Actions"],
@@ -185,7 +214,7 @@ function Projects({ openPopup }) {
             "description": "A Kubernetes and Proxmox cluster monitoring application that provides real-time status updates via a RESTful API.",
             "url": "https://status.vakaf.space",
             "repo_url": "https://github.com/VizzleTF/cluster-status-app",
-            "tools": ["Go", "Helm", "GitHub Actions", "Proxmox API", "REST API"],
+            "tools": ["Go", "Redis", "REST API", "Proxmox API", "Helm", "GitHub Actions"],
             "icon": "fa-brands fa-golang"
         }
     ], []);
@@ -226,7 +255,7 @@ function Projects({ openPopup }) {
                             <ToolList>
                                 {project.tools.map((tool, toolIndex) => (
                                     <Tool key={toolIndex}>
-                                        <ToolColor color="#000000" />
+                                        <ToolColor color={getToolColor(tool)} />
                                         {tool}
                                     </Tool>
                                 ))}
