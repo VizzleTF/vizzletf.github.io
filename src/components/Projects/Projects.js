@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 
 const ProjectsSection = styled.section`
@@ -73,9 +73,6 @@ const PublicLabel = styled.span`
     border-radius: 2em;
     padding: 0 7px;
     line-height: 18px;
-    opacity: ${props => props.visible ? 1 : 0};
-    transform: scale(${props => props.visible ? 1 : 0});
-    transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 
 const ProjectDescription = styled.p`
@@ -164,9 +161,8 @@ const RepoLink = styled.a`
     }
 `;
 
-function Projects({ openPopup }) {
+function Projects({ openPopup, onLoad }) {
     const [visibleProjects, setVisibleProjects] = useState([]);
-    const [visiblePublicLabels, setVisiblePublicLabels] = useState([]);
 
     const projects = useMemo(() => [
         {
@@ -219,17 +215,23 @@ function Projects({ openPopup }) {
         }
     ], []);
 
-    useEffect(() => {
+    const animateProjects = useCallback(() => {
+        const animationDuration = projects.length * 100;
+
         projects.forEach((_, index) => {
             setTimeout(() => {
                 setVisibleProjects(prev => [...prev, index]);
-            }, index * 200);
-
-            setTimeout(() => {
-                setVisiblePublicLabels(prev => [...prev, index]);
-            }, index * 200 + 1000);
+            }, index * 50);
         });
-    }, [projects]);
+
+        setTimeout(() => {
+            onLoad();
+        }, animationDuration);
+    }, [projects, onLoad]);
+
+    useEffect(() => {
+        animateProjects();
+    }, [animateProjects]);
 
     return (
         <ProjectsSection>
@@ -246,9 +248,7 @@ function Projects({ openPopup }) {
                                 <ProjectIcon className={`fas ${project.icon}`} />
                                 {project.title}
                             </ProjectTitle>
-                            <PublicLabel visible={visiblePublicLabels.includes(index)}>
-                                Public
-                            </PublicLabel>
+                            <PublicLabel>Public</PublicLabel>
                         </ProjectHeader>
                         <ProjectDescription>{project.description}</ProjectDescription>
                         <ProjectFooter>

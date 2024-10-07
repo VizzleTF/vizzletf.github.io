@@ -1,25 +1,11 @@
 import React, { useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import Header from './components/Header/Header';
 import Sidebar from './components/Sidebar/Sidebar';
 import Projects from './components/Projects/Projects';
 import HomeLabStatus from './components/HomeLabStatus/HomeLabStatus';
 import Footer from './components/Footer/Footer';
 import Popup from './components/Popup/Popup';
-import GlobalStyle from './GlobalStyle';
-
-const theme = {
-    colors: {
-        primaryBg: '#ffffff',
-        secondaryBg: '#f6f8fa',
-        textPrimary: '#24292e',
-        textSecondary: '#586069',
-        accentPrimary: '#0366d6',
-        accentSecondary: '#2188ff',
-        borderColor: '#e1e4e8',
-        hoverColor: '#fcffff',
-    },
-};
 
 const AppContainer = styled.div`
     display: flex;
@@ -43,6 +29,7 @@ const MainContent = styled.div`
 
 function App() {
     const [popupUrl, setPopupUrl] = useState(null);
+    const [projectsLoaded, setProjectsLoaded] = useState(false);
 
     const openPopup = (url) => {
         setPopupUrl(url);
@@ -53,21 +40,18 @@ function App() {
     };
 
     return (
-        <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <AppContainer>
-                <Header />
-                <MainContent>
-                    <Sidebar />
-                    <main>
-                        <Projects openPopup={openPopup} />
-                        <HomeLabStatus />
-                    </main>
-                </MainContent>
-                <Footer />
-                {popupUrl && <Popup url={popupUrl} onClose={closePopup} />}
-            </AppContainer>
-        </ThemeProvider>
+        <AppContainer>
+            <Header />
+            <MainContent>
+                <Sidebar />
+                <main>
+                    <Projects openPopup={openPopup} onLoad={() => setProjectsLoaded(true)} />
+                    <HomeLabStatus showAnimation={projectsLoaded} />
+                </main>
+            </MainContent>
+            <Footer />
+            {popupUrl && <Popup url={popupUrl} onClose={closePopup} />}
+        </AppContainer>
     );
 }
 

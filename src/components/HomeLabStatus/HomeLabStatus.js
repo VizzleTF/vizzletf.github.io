@@ -3,6 +3,9 @@ import styled from 'styled-components';
 
 const HomeLabSection = styled.section`
     margin-bottom: 32px;
+    opacity: ${props => props.visible ? 1 : 0};
+    transform: translateY(${props => props.visible ? 0 : '20px'});
+    transition: opacity 0.5s ease, transform 0.5s ease;
 `;
 
 const HomeLabHeader = styled.div`
@@ -218,11 +221,11 @@ const PodCount = styled.span`
     font-size: 18px;
 `;
 
-const HomeLabStatus = () => {
+const HomeLabStatus = ({ showAnimation }) => {
     const [statusData, setStatusData] = useState(null);
-    const [error, setError] = useState(null);
     const [lastUpdated, setLastUpdated] = useState(null);
     const [liveUpdates, setLiveUpdates] = useState(false);
+    const [visible, setVisible] = useState(false);
 
     const fetchData = useCallback(async () => {
         try {
@@ -233,10 +236,9 @@ const HomeLabStatus = () => {
             const data = await response.json();
             setStatusData(data);
             setLastUpdated(new Date());
-            setError(null);
         } catch (e) {
             console.error("Could not fetch status data:", e);
-            setError("Failed to load status data. Please try again later.");
+            // В случае ошибки просто не обновляем данные
         }
     }, []);
 
@@ -249,25 +251,28 @@ const HomeLabStatus = () => {
         return () => clearInterval(intervalId);
     }, [fetchData, liveUpdates]);
 
+    useEffect(() => {
+        if (showAnimation) {
+            setVisible(true);
+        }
+    }, [showAnimation]);
+
     const toggleLiveUpdates = () => {
         setLiveUpdates(!liveUpdates);
     };
 
-    if (error) {
-        return <StatusCard>{error}</StatusCard>;
-    }
-
+    // Если данные не загрузились, ничего не отображаем
     if (!statusData) {
-        return <StatusCard>Loading homelab status...</StatusCard>;
+        return null;
     }
 
     return (
-        <HomeLabSection>
+        <HomeLabSection visible={visible}>
             <HomeLabHeader>
                 <h2>Home Lab Status</h2>
                 <StatusControls>
                     <DynamicLabel>
-                        {liveUpdates
+                        {liveUpdates && lastUpdated
                             ? `Last updated: ${lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`
                             : 'Live Updates'}
                     </DynamicLabel>
