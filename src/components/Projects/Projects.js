@@ -1,0 +1,250 @@
+import React, { useEffect, useState, useMemo } from 'react';
+import styled from 'styled-components';
+
+const ProjectsSection = styled.section`
+    margin-bottom: 32px;
+`;
+
+const ProjectGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+`;
+
+const ProjectCard = styled.div`
+    background-color: ${props => props.theme.colors.primaryBg};
+    border: 1px solid ${props => props.theme.colors.borderColor};
+    border-radius: 6px;
+    padding: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    opacity: ${props => props.visible ? 1 : 0};
+    transform: translateY(${props => props.visible ? 0 : '20px'});
+    transition: opacity 0.5s ease, transform 0.5s ease;
+
+    &:hover {
+        background-color: ${props => props.theme.colors.hoverColor};
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+`;
+
+const ProjectHeader = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+`;
+
+const ProjectTitle = styled.h3`
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: ${props => props.theme.colors.accentPrimary};
+    display: flex;
+    align-items: center;
+`;
+
+const ProjectIcon = styled.i`
+    margin-right: 8px;
+    font-size: 18px;
+    animation: pulse 2s infinite;
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+`;
+
+const PublicLabel = styled.span`
+    font-size: 11px;
+    font-weight: 500;
+    color: ${props => props.theme.colors.textSecondary};
+    border: 1px solid ${props => props.theme.colors.borderColor};
+    border-radius: 2em;
+    padding: 0 7px;
+    line-height: 18px;
+    opacity: ${props => props.visible ? 1 : 0};
+    transform: scale(${props => props.visible ? 1 : 0});
+    transition: opacity 0.5s ease, transform 0.5s ease;
+`;
+
+const ProjectDescription = styled.p`
+    margin-top: 0;
+    margin-bottom: 8px;
+    line-height: 1.3;
+`;
+
+const ProjectFooter = styled.div`
+    margin-top: auto;
+    padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const ToolList = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+`;
+
+const Tool = styled.span`
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    color: ${props => props.theme.colors.textSecondary};
+    background-color: ${props => props.theme.colors.secondaryBg};
+    padding: 1px 5px;
+    border-radius: 8px;
+`;
+
+const ToolColor = styled.span`
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 4px;
+    background-color: ${props => props.color};
+`;
+
+const RepoLink = styled.a`
+    display: inline-block;
+    color: ${props => props.theme.colors.accentPrimary};
+    text-decoration: none;
+    padding: 4px 10px;
+    border: 1px solid ${props => props.theme.colors.accentPrimary};
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    white-space: nowrap;
+
+    &:hover {
+        color: ${props => props.theme.colors.primaryBg};
+        background-color: ${props => props.theme.colors.accentPrimary};
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+`;
+
+function Projects({ openPopup }) {
+    const [visibleProjects, setVisibleProjects] = useState([]);
+    const [visiblePublicLabels, setVisiblePublicLabels] = useState([]);
+
+    const projects = useMemo(() => [
+        {
+            title: "GeminiCommit",
+            description: "VS Code extension. Uses Google's Gemini AI to auto-generate commit messages.",
+            url: "https://vizzletf.github.io/GeminiCommit/",
+            repo_url: "https://github.com/VizzleTF/GeminiCommit",
+            tools: ["TypeScript", "VS Code API", "Gemini AI", "Git"],
+            icon: "fa-code-commit"
+        },
+        {
+            title: "Home Lab",
+            description: "Setup home lab. Manages VMs, K8s cluster, helm charts and deployments.",
+            url: "https://vizzletf.github.io/home_proxmox/",
+            repo_url: "https://github.com/VizzleTF/home_proxmox",
+            tools: ["Terraform", "Ansible", "Kubernetes", "Helm", "Kubectl"],
+            icon: "fa-server"
+        },
+        {
+            title: "Web App for Home Lab",
+            description: "Small-scale web app for home lab.",
+            url: "https://vizzletf.github.io/home_lab/",
+            repo_url: "https://github.com/VizzleTF/home_lab",
+            tools: ["Python", "Flask", "HTML", "CSS"],
+            icon: "fa-chart-line"
+        },
+        {
+            title: "VPN Installation Script",
+            description: "Automates VPN server setup with IKEv2.",
+            url: "https://vizzletf.github.io/StrongSwan_VPN/",
+            repo_url: "https://github.com/VizzleTF/StrongSwan_VPN",
+            tools: ["Shell", "StrongSwan", "IKEv2"],
+            icon: "fa-shield-alt"
+        },
+        {
+            title: "This page",
+            description: "Github hosted page.",
+            url: "https://vizzletf.github.io",
+            repo_url: "https://github.com/VizzleTF/vizzletf.github.io",
+            tools: ["React", "CSS", "GitHub Pages", "GitHub Actions"],
+            icon: "fa-user-circle"
+        },
+        {
+            "title": "Cluster Status App",
+            "description": "A Kubernetes and Proxmox cluster monitoring application that provides real-time status updates via a RESTful API.",
+            "url": "https://status.vakaf.space",
+            "repo_url": "https://github.com/VizzleTF/cluster-status-app",
+            "tools": ["Go", "Helm", "GitHub Actions", "Proxmox API", "REST API"],
+            "icon": "fa-brands fa-golang"
+        }
+    ], []);
+
+    useEffect(() => {
+        projects.forEach((_, index) => {
+            setTimeout(() => {
+                setVisibleProjects(prev => [...prev, index]);
+            }, index * 200);
+
+            setTimeout(() => {
+                setVisiblePublicLabels(prev => [...prev, index]);
+            }, index * 200 + 1000);
+        });
+    }, [projects]);
+
+    return (
+        <ProjectsSection>
+            <h2>Projects</h2>
+            <ProjectGrid>
+                {projects.map((project, index) => (
+                    <ProjectCard
+                        key={index}
+                        visible={visibleProjects.includes(index)}
+                        onClick={() => openPopup(project.url)}
+                    >
+                        <ProjectHeader>
+                            <ProjectTitle>
+                                <ProjectIcon className={`fas ${project.icon}`} />
+                                {project.title}
+                            </ProjectTitle>
+                            <PublicLabel visible={visiblePublicLabels.includes(index)}>
+                                Public
+                            </PublicLabel>
+                        </ProjectHeader>
+                        <ProjectDescription>{project.description}</ProjectDescription>
+                        <ProjectFooter>
+                            <ToolList>
+                                {project.tools.map((tool, toolIndex) => (
+                                    <Tool key={toolIndex}>
+                                        <ToolColor color="#000000" />
+                                        {tool}
+                                    </Tool>
+                                ))}
+                            </ToolList>
+                            <RepoLink
+                                href={project.repo_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                Open Repository
+                            </RepoLink>
+                        </ProjectFooter>
+                    </ProjectCard>
+                ))}
+            </ProjectGrid>
+        </ProjectsSection>
+    );
+}
+
+export default Projects;
