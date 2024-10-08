@@ -221,10 +221,26 @@ const PodCount = styled.span`
     font-size: 18px;
 `;
 
+const StatusHeaderWithToggle = styled(StatusHeader)`
+    justify-content: space-between;
+`;
+
+const ToggleContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const WorkloadItem = styled.div`
+    font-size: 12px;
+    color: ${props => props.theme.colors.textSecondary};
+    margin-top: 4px;
+`;
+
 const HomeLabStatus = ({ showAnimation }) => {
     const [statusData, setStatusData] = useState(null);
     const [lastUpdated, setLastUpdated] = useState(null);
     const [liveUpdates, setLiveUpdates] = useState(false);
+    const [showWorkloads, setShowWorkloads] = useState(false);
     const [visible, setVisible] = useState(false);
 
     const fetchData = useCallback(async () => {
@@ -238,7 +254,6 @@ const HomeLabStatus = ({ showAnimation }) => {
             setLastUpdated(new Date());
         } catch (e) {
             console.error("Could not fetch status data:", e);
-            // В случае ошибки просто не обновляем данные
         }
     }, []);
 
@@ -261,7 +276,10 @@ const HomeLabStatus = ({ showAnimation }) => {
         setLiveUpdates(!liveUpdates);
     };
 
-    // Если данные не загрузились, ничего не отображаем
+    const toggleWorkloads = () => {
+        setShowWorkloads(!showWorkloads);
+    };
+
     if (!statusData) {
         return null;
     }
@@ -288,18 +306,34 @@ const HomeLabStatus = ({ showAnimation }) => {
             </HomeLabHeader>
             <StatusGrid>
                 <StatusCard>
-                    <StatusHeader>
+                    <StatusHeaderWithToggle>
                         <StatusTitle>
                             <StatusIcon className="fas fa-dharmachakra" />
                             Helm Releases
                         </StatusTitle>
-                    </StatusHeader>
+                        <ToggleContainer>
+                            <DynamicLabel>Workloads</DynamicLabel>
+                            <LiveUpdatesToggle>
+                                <ToggleInput
+                                    type="checkbox"
+                                    checked={showWorkloads}
+                                    onChange={toggleWorkloads}
+                                />
+                                <Slider />
+                            </LiveUpdatesToggle>
+                        </ToggleContainer>
+                    </StatusHeaderWithToggle>
                     <StatusItemGrid>
                         {statusData.helm_releases.map((release, index) => (
                             <StatusItem key={index}>
                                 <StatusLabel status={release.status}>{release.status}</StatusLabel>
                                 <ItemName>{release.name}</ItemName>
-                                <ItemVersion>v{release.version}</ItemVersion>
+                                <ItemVersion>{release.version}</ItemVersion>
+                                {showWorkloads && release.workloads.map((workload, wIndex) => (
+                                    <WorkloadItem key={wIndex}>
+                                        {workload.name}: {workload.ready}
+                                    </WorkloadItem>
+                                ))}
                             </StatusItem>
                         ))}
                     </StatusItemGrid>
@@ -318,7 +352,7 @@ const HomeLabStatus = ({ showAnimation }) => {
                                 <StatusLabel status={node.status}>{node.status}</StatusLabel>
                                 <ItemName>{node.name}</ItemName>
                                 <ItemVersion>{node.version}</ItemVersion>
-                                <Uptime>Uptime: {node.uptime}</Uptime>
+                                <Uptime>Age: {node.age}</Uptime>
                             </StatusItem>
                         ))}
                     </StatusItemGrid>
