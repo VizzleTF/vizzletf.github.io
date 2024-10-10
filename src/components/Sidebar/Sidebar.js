@@ -41,6 +41,7 @@ const ProfileImage = styled.img`
     max-width: 200px;
     border-radius: 50%;
     margin-bottom: 16px;
+    margin-top: 24px;
 
     @media (max-width: 768px) {
         width: 80px;
@@ -52,15 +53,22 @@ const ProfileImage = styled.img`
 
 const ProfileName = styled.h2`
     margin-top: 0;
-    margin-bottom: 16px;
-    text-align: center;
-
-    @media (max-width: 768px) {
-        margin-bottom: 0;
-        text-align: left;
-    }
+    margin-bottom: 0px;
+    text-align: left;
+    align-self: flex-start;
 `;
 
+const ProfileNickName = styled.h2`
+    margin: 0;
+    margin-left: 0; 
+    text-align: left;
+    font-weight: 300;
+    align-self: flex-start;
+
+    @media (max-width: 768px) {
+        margin-left: 16px;
+    }
+`;
 const ContactInfo = styled.div`
     margin-top: 16px;
     width: 100%;
@@ -100,6 +108,7 @@ function Sidebar() {
                 <ProfileImageName>
                     <ProfileImage src="/profile.jpg" alt="Ivan K" />
                     <ProfileName>Ivan K</ProfileName>
+                    <ProfileNickName>VizzleTF</ProfileNickName>
                 </ProfileImageName>
                 <ContactInfo>
                     <ContactItem>
