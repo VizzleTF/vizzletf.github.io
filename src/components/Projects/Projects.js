@@ -26,8 +26,8 @@ const ProjectCard = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-    opacity: ${props => props.visible ? 1 : 0};
-    transform: translateY(${props => props.visible ? 0 : '20px'});
+    opacity: ${props => props.$visible ? 1 : 0};
+    transform: translateY(${props => props.$visible ? 0 : '20px'});
     transition: opacity 0.5s ease, transform 0.5s ease;
 
     &:hover {
@@ -240,7 +240,7 @@ function Projects({ openPopup, onLoad }) {
                 {projects.map((project, index) => (
                     <ProjectCard
                         key={index}
-                        visible={visibleProjects.includes(index)}
+                        $visible={visibleProjects.includes(index)}
                         onClick={() => openPopup(project.url)}
                     >
                         <ProjectHeader>

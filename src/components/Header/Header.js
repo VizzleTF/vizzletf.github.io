@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Sun, Moon } from 'lucide-react';
 
 const HeaderContainer = styled.header`
     background-color: ${props => props.theme.colors.secondaryBg};
@@ -37,13 +38,27 @@ const Logo = styled.div`
     }
 `;
 
-function Header() {
+const ThemeToggle = styled.button`
+    background: none;
+    border: none;
+    color: ${props => props.theme.colors.textPrimary};
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    font-size: ${props => props.theme.fontSizes.medium};
+`;
+
+function Header({ toggleTheme, currentTheme }) {
     return (
         <HeaderContainer>
             <HeaderContent>
                 <Logo>
                     <i className="fab fa-github"></i> VizzleTF
                 </Logo>
+                <ThemeToggle onClick={toggleTheme}>
+                    {currentTheme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+                </ThemeToggle>
             </HeaderContent>
         </HeaderContainer>
     );

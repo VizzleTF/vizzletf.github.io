@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import styled, { ThemeProvider } from 'styled-components';
 import Header from './components/Header/Header';
 import Sidebar from './components/Sidebar/Sidebar';
 import Projects from './components/Projects/Projects';
 import HomeLabStatus from './components/HomeLabStatus/HomeLabStatus';
 import Footer from './components/Footer/Footer';
 import Popup from './components/Popup/Popup';
+import { lightTheme, darkTheme } from './theme';
+import GlobalStyle from './GlobalStyle';
 
 const AppContainer = styled.div`
     display: flex;
@@ -30,6 +32,25 @@ const MainContent = styled.div`
 function App() {
     const [popupUrl, setPopupUrl] = useState(null);
     const [projectsLoaded, setProjectsLoaded] = useState(false);
+    const [currentTheme, setCurrentTheme] = useState('light');
+    const [themeLoaded, setThemeLoaded] = useState(false);
+
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setCurrentTheme(savedTheme);
+        } else {
+            const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            setCurrentTheme(prefersDarkMode ? 'dark' : 'light');
+        }
+        setThemeLoaded(true);
+    }, []);
+
+    const toggleTheme = () => {
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        setCurrentTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    };
 
     const openPopup = (url) => {
         setPopupUrl(url);
@@ -39,19 +60,26 @@ function App() {
         setPopupUrl(null);
     };
 
+    if (!themeLoaded) {
+        return null; // или можете отрендерить загрузочный индикатор
+    }
+
     return (
-        <AppContainer>
-            <Header />
-            <MainContent>
-                <Sidebar />
-                <main>
-                    <Projects openPopup={openPopup} onLoad={() => setProjectsLoaded(true)} />
-                    <HomeLabStatus showAnimation={projectsLoaded} />
-                </main>
-            </MainContent>
-            <Footer />
-            {popupUrl && <Popup url={popupUrl} onClose={closePopup} />}
-        </AppContainer>
+        <ThemeProvider theme={currentTheme === 'light' ? lightTheme : darkTheme}>
+            <GlobalStyle />
+            <AppContainer>
+                <Header toggleTheme={toggleTheme} currentTheme={currentTheme} />
+                <MainContent>
+                    <Sidebar />
+                    <main>
+                        <Projects openPopup={openPopup} onLoad={() => setProjectsLoaded(true)} />
+                        <HomeLabStatus showAnimation={projectsLoaded} />
+                    </main>
+                </MainContent>
+                <Footer />
+                {popupUrl && <Popup url={popupUrl} onClose={closePopup} />}
+            </AppContainer>
+        </ThemeProvider>
     );
 }
 
