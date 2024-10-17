@@ -27,6 +27,7 @@ export const lightTheme = {
         accentSecondary: '#2188ff',
         borderColor: '#e1e4e8',
         hoverColor: '#fcffff',
+        sliderBg: '#ccc',
     },
 };
 
@@ -41,5 +42,6 @@ export const darkTheme = {
         accentSecondary: '#79c0ff',
         borderColor: '#30363d',
         hoverColor: '#161b22',
+        sliderBg: '#333',
     },
 };
