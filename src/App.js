@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import Header from './components/Header/Header';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -28,6 +28,11 @@ const MainContent = styled.div`
         padding: 0 16px;
     }
 `;
+
+const MemoizedSidebar = memo(Sidebar);
+const MemoizedProjects = memo(Projects);
+const MemoizedHomeLabStatus = memo(HomeLabStatus);
+const MemoizedFooter = memo(Footer);
 
 function App() {
     const [popupUrl, setPopupUrl] = useState(null);
@@ -70,13 +75,13 @@ function App() {
             <AppContainer>
                 <Header toggleTheme={toggleTheme} currentTheme={currentTheme} />
                 <MainContent>
-                    <Sidebar />
+                    <MemoizedSidebar />
                     <main>
-                        <Projects openPopup={openPopup} onLoad={() => setProjectsLoaded(true)} />
-                        <HomeLabStatus showAnimation={projectsLoaded} />
+                        <MemoizedProjects openPopup={openPopup} onLoad={() => setProjectsLoaded(true)} />
+                        <MemoizedHomeLabStatus showAnimation={projectsLoaded} />
                     </main>
                 </MainContent>
-                <Footer />
+                <MemoizedFooter />
                 {popupUrl && <Popup url={popupUrl} onClose={closePopup} />}
             </AppContainer>
         </ThemeProvider>

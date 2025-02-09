@@ -35,6 +35,11 @@ const ProjectCard = styled.div`
         transform: translateY(-2px);
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     }
+
+    &:focus {
+        outline: 2px solid ${props => props.theme.colors.accentPrimary};
+        outline-offset: 2px;
+    }
 `;
 
 const ProjectHeader = styled.div`
@@ -166,10 +171,10 @@ function Projects({ openPopup, onLoad }) {
 
     const projects = useMemo(() => [
         {
-            title: "GeminiCommit",
+            title: "Commit Sage",
             description: "VS Code extension. Uses Google's Gemini AI to auto-generate commit messages.",
-            url: "https://vizzletf.github.io/GeminiCommit/",
-            repo_url: "https://github.com/VizzleTF/GeminiCommit",
+            url: "https://github.com/VizzleTF/CommitSage",
+            repo_url: "https://github.com/VizzleTF/CommitSage",
             tools: ["TypeScript", "VS Code API", "Gemini AI", "Git"],
             icon: "fa-code-commit"
         },
@@ -235,13 +240,19 @@ function Projects({ openPopup, onLoad }) {
 
     return (
         <ProjectsSection>
-            <h2>Projects</h2>
-            <ProjectGrid>
+            <h2 id="projects-heading">Projects</h2>
+            <ProjectGrid role="list" aria-labelledby="projects-heading">
                 {projects.map((project, index) => (
                     <ProjectCard
                         key={index}
-                        $visible={visibleProjects.includes(index)}
+                        role="listitem"
+                        tabIndex={0}
                         onClick={() => openPopup(project.url)}
+                        onKeyPress={(e) => {
+                            if (e.key === 'Enter') openPopup(project.url);
+                        }}
+                        aria-label={`${project.title} project`}
+                        $visible={visibleProjects.includes(index)}
                     >
                         <ProjectHeader>
                             <ProjectTitle>
