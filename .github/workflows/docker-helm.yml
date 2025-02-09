@@ -1,0 +1,84 @@
+name: Docker Build and Helm Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Set image name
+        id: image-names
+        run: |
+          echo "REGISTRY=ghcr.io" >> $GITHUB_ENV
+          echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.VERSION }}
+
+  helm:
+    needs: docker
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Package and Push Chart
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Package chart
+          helm package chart/
+
+          # Create or switch to gh-pages branch
+          git fetch origin gh-pages || git branch gh-pages
+          git checkout gh-pages || git checkout -b gh-pages
+          git pull origin gh-pages || true
+
+          # Update repository
+          mkdir -p docs/charts
+          mv *.tgz docs/charts/
+          helm repo index docs/charts --url https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/charts
+
+          # Commit and push
+          git add docs/charts
+          git commit -m "Release chart ${{ github.ref_name }}"
+          git push origin gh-pages
