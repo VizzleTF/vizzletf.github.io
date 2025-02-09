@@ -76,8 +76,21 @@ jobs:
           # Update repository
           mkdir -p docs/charts
           mv *.tgz docs/charts/
-          helm repo index docs/charts --url https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/charts
+          
+          # Create or update README
+          echo "# Helm Charts Repository" > docs/charts/README.md
+          echo "" >> docs/charts/README.md
+          echo "## Usage" >> docs/charts/README.md
+          echo "" >> docs/charts/README.md
+          echo '```bash' >> docs/charts/README.md
+          echo "helm repo add portfolio https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/charts" >> docs/charts/README.md
+          echo "helm repo update" >> docs/charts/README.md
+          echo "helm install my-portfolio portfolio/portfolio" >> docs/charts/README.md
+          echo '```' >> docs/charts/README.md
 
+          # Create index
+          helm repo index docs/charts --url https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/charts
+          
           # Commit and push
           git add docs/charts
           git commit -m "Release chart ${{ github.ref_name }}"

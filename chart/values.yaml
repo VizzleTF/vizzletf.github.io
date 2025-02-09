@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/vizzletf/page
+  repository: ghcr.io/vizzletf/vizzletf.github.io
   tag: latest
   pullPolicy: IfNotPresent
 
