@@ -74,24 +74,24 @@ jobs:
           git pull origin gh-pages || true
 
           # Update repository
-          mkdir -p docs/charts
-          mv *.tgz docs/charts/
+          mkdir -p charts
+          mv *.tgz charts/
           
           # Create or update README
-          echo "# Helm Charts Repository" > docs/charts/README.md
-          echo "" >> docs/charts/README.md
-          echo "## Usage" >> docs/charts/README.md
-          echo "" >> docs/charts/README.md
-          echo '```bash' >> docs/charts/README.md
-          echo "helm repo add portfolio https://vizzletf.github.io/docs/charts" >> docs/charts/README.md
-          echo "helm repo update" >> docs/charts/README.md
-          echo "helm install my-portfolio portfolio/portfolio" >> docs/charts/README.md
-          echo '```' >> docs/charts/README.md
+          echo "# Helm Charts Repository" > charts/README.md
+          echo "" >> charts/README.md
+          echo "## Usage" >> charts/README.md
+          echo "" >> charts/README.md
+          echo '```bash' >> charts/README.md
+          echo "helm repo add portfolio https://vizzletf.github.io/charts" >> charts/README.md
+          echo "helm repo update" >> charts/README.md
+          echo "helm install my-portfolio portfolio/portfolio" >> charts/README.md
+          echo '```' >> charts/README.md
 
           # Create index
-          helm repo index docs/charts --url https://vizzletf.github.io/docs/charts
+          helm repo index charts --url https://vizzletf.github.io/charts
           
           # Commit and push
-          git add docs/charts
+          git add charts
           git commit -m "Release chart ${{ github.ref_name }}"
           git push origin gh-pages
