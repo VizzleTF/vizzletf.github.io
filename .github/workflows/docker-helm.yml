@@ -83,13 +83,13 @@ jobs:
           echo "## Usage" >> docs/charts/README.md
           echo "" >> docs/charts/README.md
           echo '```bash' >> docs/charts/README.md
-          echo "helm repo add portfolio https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/charts" >> docs/charts/README.md
+          echo "helm repo add portfolio https://vizzletf.github.io/docs/charts" >> docs/charts/README.md
           echo "helm repo update" >> docs/charts/README.md
           echo "helm install my-portfolio portfolio/portfolio" >> docs/charts/README.md
           echo '```' >> docs/charts/README.md
 
           # Create index
-          helm repo index docs/charts --url https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/charts
+          helm repo index docs/charts --url https://vizzletf.github.io/docs/charts
           
           # Commit and push
           git add docs/charts
