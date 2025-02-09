@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  portfolio:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-02-09T17:26:40.504963445Z"
+    description: A Helm chart for Portfolio website
+    digest: 45f90328d3851bbf190f55fd3f606bc7de8e4753c9396df6691febe5559403e4
+    name: portfolio
+    type: application
+    urls:
+    - https://vizzletf.github.io/charts/portfolio-0.1.4.tgz
+    version: 0.1.4
+generated: "2025-02-09T17:26:40.504548163Z"
