@@ -240,8 +240,14 @@ const ToggleContainer = styled.div`
 
 const WorkloadItem = styled.div`
     font-size: 12px;
-    color: ${props => props.theme.colors.textSecondary};
+    color: ${props => props.theme.colors.text.secondary};
     margin-top: 4px;
+`;
+
+const RightColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 `;
 
 const HomeLabStatus = ({ showAnimation }) => {
@@ -338,59 +344,61 @@ const HomeLabStatus = ({ showAnimation }) => {
                     </StatusItemGrid>
                 </StatusCard>
 
-                <StatusCard>
-                    <StatusHeader>
-                        <StatusTitle>
-                            <StatusIcon className="fas fa-server" />
-                            Kubernetes Nodes
-                        </StatusTitle>
-                    </StatusHeader>
-                    <StatusItemGrid>
-                        {statusData.node_statuses.map((node, index) => (
-                            <StatusItem key={index}>
-                                <StatusLabel status={node.status}>{node.status}</StatusLabel>
-                                <ItemName>{node.name}</ItemName>
-                                <ItemVersion>{node.version}</ItemVersion>
-                                <Uptime>Age: {node.age}</Uptime>
-                            </StatusItem>
-                        ))}
-                    </StatusItemGrid>
-                </StatusCard>
+                <RightColumn>
+                    <StatusCard>
+                        <StatusHeader>
+                            <StatusTitle>
+                                <StatusIcon className="fas fa-database" />
+                                Proxmox Nodes
+                            </StatusTitle>
+                        </StatusHeader>
+                        <StatusItemGrid>
+                            {statusData.proxmox_nodes.map((node, index) => (
+                                <StatusItem key={index}>
+                                    <StatusLabel status={node.status}>{node.status}</StatusLabel>
+                                    <ItemName>{node.name}</ItemName>
+                                    <Uptime>Uptime: {node.uptime}</Uptime>
+                                </StatusItem>
+                            ))}
+                        </StatusItemGrid>
+                    </StatusCard>
 
-                <StatusCard>
-                    <StatusHeader>
-                        <StatusTitle>
-                            <StatusIcon className="fas fa-database" />
-                            Proxmox Nodes
-                        </StatusTitle>
-                    </StatusHeader>
-                    <StatusItemGrid>
-                        {statusData.proxmox_nodes.map((node, index) => (
-                            <StatusItem key={index}>
-                                <StatusLabel status={node.status}>{node.status}</StatusLabel>
-                                <ItemName>{node.name}</ItemName>
-                                <Uptime>Uptime: {node.uptime}</Uptime>
-                            </StatusItem>
-                        ))}
-                    </StatusItemGrid>
-                </StatusCard>
+                    <StatusCard>
+                        <StatusHeader>
+                            <StatusTitle>
+                                <StatusIcon className="fas fa-server" />
+                                Kubernetes Nodes
+                            </StatusTitle>
+                        </StatusHeader>
+                        <StatusItemGrid>
+                            {statusData.node_statuses.map((node, index) => (
+                                <StatusItem key={index}>
+                                    <StatusLabel status={node.status}>{node.status}</StatusLabel>
+                                    <ItemName>{node.name}</ItemName>
+                                    <ItemVersion>{node.version}</ItemVersion>
+                                    <Uptime>Age: {node.age}</Uptime>
+                                </StatusItem>
+                            ))}
+                        </StatusItemGrid>
+                    </StatusCard>
 
-                <StatusCard>
-                    <StatusHeader>
-                        <StatusTitle>
-                            <StatusIcon className="fas fa-cubes" />
-                            Pod Statuses
-                        </StatusTitle>
-                    </StatusHeader>
-                    <PodStatusGrid>
-                        {Object.entries(statusData.pod_statuses).map(([status, count]) => (
-                            <PodStatusItem key={status}>
-                                <PodStatus>{status}</PodStatus>
-                                <PodCount>{count}</PodCount>
-                            </PodStatusItem>
-                        ))}
-                    </PodStatusGrid>
-                </StatusCard>
+                    <StatusCard>
+                        <StatusHeader>
+                            <StatusTitle>
+                                <StatusIcon className="fas fa-cubes" />
+                                Pod Statuses
+                            </StatusTitle>
+                        </StatusHeader>
+                        <PodStatusGrid>
+                            {Object.entries(statusData.pod_statuses).map(([status, count]) => (
+                                <PodStatusItem key={status}>
+                                    <PodStatus>{status}</PodStatus>
+                                    <PodCount>{count}</PodCount>
+                                </PodStatusItem>
+                            ))}
+                        </PodStatusGrid>
+                    </StatusCard>
+                </RightColumn>
             </StatusGrid>
         </HomeLabSection>
     );
