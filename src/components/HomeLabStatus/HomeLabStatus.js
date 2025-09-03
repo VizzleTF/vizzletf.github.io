@@ -154,11 +154,19 @@ const StatusLabel = styled.span`
     right: 4px;
     font-size: 11px;
     font-weight: 500;
-    color: ${props => props.status === 'deployed' || props.status === 'online' || props.status === 'Ready'
+    color: ${props => props.status === 'Healthy' || props.status === 'online' || props.status === 'Ready'
         ? '#28a745'
+        : props.status === 'Progressing' || props.status === 'Degraded'
+        ? '#ffc107'
+        : props.status === 'Missing' || props.status === 'Unknown'
+        ? '#dc3545'
         : props.theme.colors.textSecondary};
-    border: 1px solid ${props => props.status === 'deployed' || props.status === 'online' || props.status === 'Ready'
+    border: 1px solid ${props => props.status === 'Healthy' || props.status === 'online' || props.status === 'Ready'
         ? '#28a745'
+        : props.status === 'Progressing' || props.status === 'Degraded'
+        ? '#ffc107'
+        : props.status === 'Missing' || props.status === 'Unknown'
+        ? '#dc3545'
         : props.theme.colors.borderColor};
     border-radius: 2em;
     padding: 0 7px;
@@ -240,7 +248,7 @@ const HomeLabStatus = ({ showAnimation }) => {
     const [statusData, setStatusData] = useState(null);
     const [lastUpdated, setLastUpdated] = useState(null);
     const [liveUpdates, setLiveUpdates] = useState(false);
-    const [showWorkloads, setShowWorkloads] = useState(false);
+
     const [visible, setVisible] = useState(false);
 
     const fetchData = useCallback(async () => {
@@ -276,9 +284,7 @@ const HomeLabStatus = ({ showAnimation }) => {
         setLiveUpdates(!liveUpdates);
     };
 
-    const toggleWorkloads = () => {
-        setShowWorkloads(!showWorkloads);
-    };
+
 
     if (!statusData) {
         return null;
@@ -306,34 +312,18 @@ const HomeLabStatus = ({ showAnimation }) => {
             </HomeLabHeader>
             <StatusGrid>
                 <StatusCard>
-                    <StatusHeaderWithToggle>
+                    <StatusHeader>
                         <StatusTitle>
-                            <StatusIcon className="fas fa-dharmachakra" />
-                            Helm Releases
+                            <StatusIcon className="fas fa-rocket" />
+                            ArgoCD Applications
                         </StatusTitle>
-                        <ToggleContainer>
-                            <DynamicLabel>Workloads</DynamicLabel>
-                            <LiveUpdatesToggle>
-                                <ToggleInput
-                                    type="checkbox"
-                                    checked={showWorkloads}
-                                    onChange={toggleWorkloads}
-                                />
-                                <Slider />
-                            </LiveUpdatesToggle>
-                        </ToggleContainer>
-                    </StatusHeaderWithToggle>
+                    </StatusHeader>
                     <StatusItemGrid>
-                        {statusData.helm_releases.map((release, index) => (
+                        {statusData.argo_applications.map((app, index) => (
                             <StatusItem key={index}>
-                                <StatusLabel status={release.status}>{release.status}</StatusLabel>
-                                <ItemName>{release.name}</ItemName>
-                                <ItemVersion>{release.version}</ItemVersion>
-                                {showWorkloads && release.workloads.map((workload, wIndex) => (
-                                    <WorkloadItem key={wIndex}>
-                                        {workload.name}: {workload.ready}
-                                    </WorkloadItem>
-                                ))}
+                                <StatusLabel status={app.health}>{app.health}</StatusLabel>
+                                <ItemName>{app.name}</ItemName>
+                                <ItemVersion>Status: {app.status}</ItemVersion>
                             </StatusItem>
                         ))}
                     </StatusItemGrid>

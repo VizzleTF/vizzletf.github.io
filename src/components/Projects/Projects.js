@@ -122,11 +122,36 @@ const getToolColor = (tool) => {
     const colors = {
         TypeScript: '#2b7489',
         'VS Code API': '#0078D7',
+        OpenAI: '#10A37F',
+        Anthropic: '#D97706',
+        'Gemini AI': '#663333',
+        Git: '#F05032',
+        Kotlin: '#7F52FF',
+        'Android SDK': '#3DDC84',
+        'Material Design 3': '#6750A4',
+        WebView: '#4285F4',
+        MVVM: '#FF6F00',
         Terraform: '#7B42BC',
         Ansible: '#EE0000',
         Kubernetes: '#326CE5',
         Helm: '#277A9F',
-        Kubectl: '#326CE5',
+        Proxmox: '#E57000',
+        ArgoCD: '#EF7B4D',
+        JavaScript: '#F7DF1E',
+        HTML5: '#E34F26',
+        CSS3: '#1572B6',
+        'QR Code': '#000000',
+        TOTP: '#4CAF50',
+        Crypto: '#FF9800',
+        React: '#61DAFB',
+        'Styled Components': '#DB7093',
+        'GitHub Pages': '#222222',
+        Docker: '#2496ED',
+        'GitHub Actions': '#2088FF',
+        Go: '#00ADD8',
+        Redis: '#DC382D',
+        'Kubernetes API': '#326CE5',
+        'Proxmox API': '#E57000',
         Python: '#3572A5',
         Flask: '#000000',
         HTML: '#e34c26',
@@ -134,15 +159,8 @@ const getToolColor = (tool) => {
         Shell: '#89e051',
         StrongSwan: '#4A154B',
         IKEv2: '#FFA500',
-        React: '#61DAFB',
-        'GitHub Pages': '#222222',
-        'GitHub Actions': '#2088FF',
-        'Gemini AI': '#663333',
-        Git: '#F05032',
-        Go: '#00ADD8',
-        'Proxmox API': '#E57000',
+        Kubectl: '#326CE5',
         'REST API': '#0096D6',
-        Redis: '#E5197E',
     };
     return colors[tool] || '#000000';
 };
@@ -171,52 +189,52 @@ function Projects({ openPopup, onLoad }) {
 
     const projects = useMemo(() => [
         {
-            title: "Commit Sage",
-            description: "VS Code extension. Uses Google's Gemini AI to auto-generate commit messages.",
+            title: "CommitSage",
+            description: "AI-powered VS Code extension that generates intelligent commit messages using multiple AI providers including OpenAI, Anthropic, and Google Gemini.",
             url: "https://github.com/VizzleTF/CommitSage",
             repo_url: "https://github.com/VizzleTF/CommitSage",
-            tools: ["TypeScript", "VS Code API", "Gemini AI", "Git"],
+            tools: ["TypeScript", "VS Code API", "OpenAI", "Anthropic", "Gemini AI", "Git"],
             icon: "fa-code-commit"
         },
         {
-            title: "Home Lab",
-            description: "Setup home lab. Manages VMs, K8s cluster, helm charts and deployments.",
-            url: "https://vizzletf.github.io/home_proxmox/",
+            title: "MovieTorr",
+            description: "Android torrent search application with integrated web browser, supporting multiple trackers and Material Design 3 UI.",
+            url: "https://github.com/VizzleTF/MovieTorr",
+            repo_url: "https://github.com/VizzleTF/MovieTorr",
+            tools: ["Kotlin", "Android SDK", "Material Design 3", "WebView", "MVVM"],
+            icon: "fa-mobile-alt"
+        },
+        {
+            title: "Home Proxmox",
+            description: "Infrastructure as Code for home lab built on Proxmox with Kubernetes cluster, automated deployments, and comprehensive monitoring.",
+            url: "https://github.com/VizzleTF/home_proxmox",
             repo_url: "https://github.com/VizzleTF/home_proxmox",
-            tools: ["Terraform", "Ansible", "Kubernetes", "Helm", "Kubectl"],
+            tools: ["Terraform", "Ansible", "Kubernetes", "Helm", "Proxmox", "ArgoCD"],
             icon: "fa-server"
         },
         {
-            title: "Web App for Home Lab",
-            description: "Small-scale web app for home lab.",
-            url: "https://vizzletf.github.io/home_lab/",
-            repo_url: "https://github.com/VizzleTF/home_lab",
-            tools: ["Python", "Flask", "HTML", "CSS"],
-            icon: "fa-chart-line"
+            title: "TOTP Decoder",
+            description: "Secure client-side TOTP QR code decoder with real-time code generation, supporting multiple formats without server communication.",
+            url: "https://github.com/VizzleTF/TOTP_decoder",
+            repo_url: "https://github.com/VizzleTF/TOTP_decoder",
+            tools: ["JavaScript", "HTML5", "CSS3", "QR Code", "TOTP", "Crypto"],
+            icon: "fa-qrcode"
         },
         {
-            title: "VPN Installation Script",
-            description: "Automates VPN server setup with IKEv2.",
-            url: "https://vizzletf.github.io/StrongSwan_VPN/",
-            repo_url: "https://github.com/VizzleTF/StrongSwan_VPN",
-            tools: ["Shell", "StrongSwan", "IKEv2"],
-            icon: "fa-shield-alt"
-        },
-        {
-            title: "React Web Page",
-            description: "React application hosted on GitHub Pages.",
+            title: "Portfolio Website",
+            description: "Modern React-based personal portfolio with automated CI/CD, containerization, and multi-target deployment to GitHub Pages and Kubernetes.",
             url: "https://vizzletf.github.io",
             repo_url: "https://github.com/VizzleTF/vizzletf.github.io",
-            tools: ["React", "CSS", "GitHub Pages", "GitHub Actions"],
+            tools: ["React", "Styled Components", "GitHub Pages", "Docker", "Helm", "GitHub Actions"],
             icon: "fa-user-circle"
         },
         {
-            "title": "Cluster Status App",
-            "description": "A Kubernetes and Proxmox cluster monitoring application that provides real-time status updates via a RESTful API.",
-            "url": "https://status.vakaf.space",
-            "repo_url": "https://github.com/VizzleTF/cluster-status-app",
-            "tools": ["Go", "Redis", "REST API", "Proxmox API", "Helm", "GitHub Actions"],
-            "icon": "fa-brands fa-golang"
+            title: "Cluster Status App",
+            description: "Go-based monitoring service that aggregates status from Kubernetes clusters and Proxmox environments via unified HTTP API with Redis caching.",
+            url: "https://status.vakaf.space",
+            repo_url: "https://github.com/VizzleTF/cluster-status-app",
+            tools: ["Go", "Redis", "Kubernetes API", "Proxmox API", "Helm", "Docker"],
+            icon: "fa-chart-line"
         }
     ], []);
 
