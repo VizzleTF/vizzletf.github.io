@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
-const HomeLabSection = styled.section`
+const HomeLabSection = styled.section.withConfig({
+    shouldForwardProp: (prop) => prop !== 'visible'
+})`
     margin-bottom: 32px;
     opacity: ${props => props.visible ? 1 : 0};
     transform: translateY(${props => props.visible ? 0 : '20px'});
@@ -143,9 +145,33 @@ const StatusItem = styled.div`
     transition: all 0.3s ease;
 
     &:hover {
+        border-color: ${props => props.theme.colors.accentPrimary};
         transform: translateY(-2px);
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
     }
+`;
+
+const NodeItemContent = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+`;
+
+const NodeLeftInfo = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+`;
+
+const NodeRightMetrics = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-left: 8px;
+    align-items: center;
+    margin-top: 20px;
 `;
 
 const StatusLabel = styled.span`
@@ -157,17 +183,17 @@ const StatusLabel = styled.span`
     color: ${props => props.status === 'Healthy' || props.status === 'online' || props.status === 'Ready'
         ? '#28a745'
         : props.status === 'Progressing' || props.status === 'Degraded'
-        ? '#ffc107'
-        : props.status === 'Missing' || props.status === 'Unknown'
-        ? '#dc3545'
-        : props.theme.colors.textSecondary};
+            ? '#ffc107'
+            : props.status === 'Missing' || props.status === 'Unknown'
+                ? '#dc3545'
+                : props.theme.colors.textSecondary};
     border: 1px solid ${props => props.status === 'Healthy' || props.status === 'online' || props.status === 'Ready'
         ? '#28a745'
         : props.status === 'Progressing' || props.status === 'Degraded'
-        ? '#ffc107'
-        : props.status === 'Missing' || props.status === 'Unknown'
-        ? '#dc3545'
-        : props.theme.colors.borderColor};
+            ? '#ffc107'
+            : props.status === 'Missing' || props.status === 'Unknown'
+                ? '#dc3545'
+                : props.theme.colors.borderColor};
     border-radius: 2em;
     padding: 0 7px;
     line-height: 18px;
@@ -228,6 +254,50 @@ const PodStatus = styled.span`
 const PodCount = styled.span`
     font-size: 18px;
 `;
+
+const ResourceMetrics = styled.div`
+    display: flex;
+    gap: 4px;
+    align-items: center;
+`;
+
+const ResourceCircle = styled.div`
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: conic-gradient(
+        ${props => {
+        const percentage = props.percentage || 0;
+        let color = '#22c55e'; // green
+        if (percentage > 80) color = '#ef4444'; // red
+        else if (percentage > 60) color = '#eab308'; // yellow
+        return color;
+    }} ${props => props.percentage || 0}%,
+        ${props => props.theme.colors.borderColor} ${props => props.percentage || 0}%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: ${props => props.theme.colors.primaryBg};
+    }
+`;
+
+const ResourceIcon = styled.i`
+    position: relative;
+    z-index: 1;
+    font-size: 8px;
+    color: ${props => props.theme.colors.textPrimary};
+`;
+
+
 
 const StatusHeaderWithToggle = styled(StatusHeader)`
     justify-content: space-between;
@@ -331,7 +401,7 @@ const HomeLabStatus = ({ showAnimation }) => {
                         </StatusTitle>
                     </StatusHeader>
                     <StatusItemGrid>
-                        {statusData.argo_applications.map((app, index) => (
+                        {statusData.argo_applications && statusData.argo_applications.map((app, index) => (
                             <StatusItem key={index}>
                                 <StatusLabel status={app.health}>{app.health}</StatusLabel>
                                 <ItemName>{app.name}</ItemName>
@@ -353,7 +423,7 @@ const HomeLabStatus = ({ showAnimation }) => {
                             </StatusTitle>
                         </StatusHeader>
                         <StatusItemGrid>
-                            {statusData.proxmox_nodes.map((node, index) => (
+                            {statusData.proxmox_nodes && statusData.proxmox_nodes.map((node, index) => (
                                 <StatusItem key={index}>
                                     <StatusLabel status={node.status}>{node.status}</StatusLabel>
                                     <ItemName>{node.name}</ItemName>
@@ -371,14 +441,33 @@ const HomeLabStatus = ({ showAnimation }) => {
                             </StatusTitle>
                         </StatusHeader>
                         <StatusItemGrid>
-                            {statusData.node_statuses.map((node, index) => (
-                                <StatusItem key={index}>
-                                    <StatusLabel status={node.status}>{node.status}</StatusLabel>
-                                    <ItemName>{node.name}</ItemName>
-                                    <ItemVersion>{node.version}</ItemVersion>
-                                    <Uptime>Age: {node.age}</Uptime>
-                                </StatusItem>
-                            ))}
+                            {statusData.node_statuses && statusData.node_statuses.map((node, index) => {
+                                const cpuPercentage = node.cpuUsage && node.cpuLimit ? Math.round((node.cpuUsage / node.cpuLimit) * 100) : 0;
+                                const memoryPercentage = node.memoryUsage && node.memoryLimit ? Math.round((node.memoryUsage / node.memoryLimit) * 100) : 0;
+
+                                return (
+                                    <StatusItem key={index}>
+                                        <StatusLabel status={node.status}>{node.status}</StatusLabel>
+                                        <NodeItemContent>
+                                            <NodeLeftInfo>
+                                                <ItemName>{node.name}</ItemName>
+                                                <ItemVersion>{node.version}</ItemVersion>
+                                                <Uptime>Age: {node.age}</Uptime>
+                                            </NodeLeftInfo>
+                                            <NodeRightMetrics>
+                                                <ResourceMetrics>
+                                                    <ResourceCircle percentage={cpuPercentage}>
+                                                        <ResourceIcon className="fas fa-microchip" />
+                                                    </ResourceCircle>
+                                                    <ResourceCircle percentage={memoryPercentage}>
+                                                        <ResourceIcon className="fas fa-memory" />
+                                                    </ResourceCircle>
+                                                </ResourceMetrics>
+                                            </NodeRightMetrics>
+                                        </NodeItemContent>
+                                    </StatusItem>
+                                );
+                            })}
                         </StatusItemGrid>
                     </StatusCard>
 
@@ -390,7 +479,7 @@ const HomeLabStatus = ({ showAnimation }) => {
                             </StatusTitle>
                         </StatusHeader>
                         <PodStatusGrid>
-                            {Object.entries(statusData.pod_statuses).map(([status, count]) => (
+                            {statusData.pod_statuses && Object.entries(statusData.pod_statuses).map(([status, count]) => (
                                 <PodStatusItem key={status}>
                                     <PodStatus>{status}</PodStatus>
                                     <PodCount>{count}</PodCount>
